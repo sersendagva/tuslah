@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Багшийн туслах</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap">
+<style>
+:root{
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F4F7FB;--surface:#FFFFFF;--ink:#14213D;--muted:#53607A;--line:#D5DDEA;
+  --blue:#2446C9;--blue-soft:#E3E9FB;--mark:#FFC933;--ok:#0E8A5F;--warn:#B25E00;--warn-bg:#FFF1DC;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1424;--surface:#161E34;--ink:#EAF0FF;--muted:#9AA8C7;--line:#2A3556;
+  --blue:#7C98FF;--blue-soft:#1D2848;--mark:#FFC933;--ok:#4CD6A1;--warn:#FFB45C;--warn-bg:#33270F;color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1424;--surface:#161E34;--ink:#EAF0FF;--muted:#9AA8C7;--line:#2A3556;
+  --blue:#7C98FF;--blue-soft:#1D2848;--mark:#FFC933;--ok:#4CD6A1;--warn:#FFB45C;--warn-bg:#33270F;color-scheme:dark;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.6;font-size:17px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.brand{display:flex;gap:10px;align-items:center;font-weight:800;font-size:19px;text-decoration:none}
+.brand i{width:30px;height:30px;border-radius:50%;background:var(--blue);display:grid;place-items:center}
+.brand i::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--mark)}
+nav a{margin-left:22px;text-decoration:none;color:var(--muted);font-weight:500;font-size:15px}
+nav a:hover{color:var(--ink)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:44px 0 72px}
+h1{font-size:clamp(34px,5.4vw,58px);line-height:1.1;letter-spacing:-.02em;margin:0 0 20px;font-weight:800}
+.lead{color:var(--muted);max-width:30em;margin:0 0 28px;font-size:18px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 24px;border-radius:12px;font-weight:700;text-decoration:none;border:2px solid var(--blue);font-size:16px;cursor:pointer;font-family:inherit}
+.btn.main{background:var(--blue);color:#fff}
+:root[data-theme="dark"] .btn.main{color:#0E1424}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.main{color:#0E1424}}
+.btn.alt{background:transparent;color:var(--blue)}
+.btn:disabled{opacity:.6;cursor:wait}
+.note{font-size:14px;color:var(--muted);margin-top:18px}
+
+/* answer sheet — the memorable element */
+.sheet{position:relative;background:var(--surface);border:2px solid var(--ink);border-radius:14px;padding:22px 22px 18px;box-shadow:8px 8px 0 var(--blue);overflow:hidden;max-width:420px;justify-self:center;width:100%}
+.sheet-top{display:flex;justify-content:space-between;font-weight:700;font-size:14px;border-bottom:2px dashed var(--line);padding-bottom:12px;margin-bottom:14px}
+.row{display:grid;grid-template-columns:26px repeat(4,1fr);align-items:center;gap:8px;margin-bottom:9px;font-weight:700;font-size:14px;color:var(--muted)}
+.row b{display:block;width:100%;aspect-ratio:1;max-width:30px;justify-self:center;border:2px solid var(--ink);border-radius:50%;position:relative;font-size:11px;display:grid;place-items:center;color:var(--muted);font-weight:700}
+.row b.on{background:var(--ink);color:var(--surface)}
+.row.q{margin-bottom:12px;font-size:12px}
+.scan{position:absolute;left:0;right:0;top:0;height:46px;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--mark) 55%,transparent));border-bottom:3px solid var(--mark);animation:scan 3.6s ease-in-out 1 forwards;pointer-events:none}
+@keyframes scan{0%{transform:translateY(-46px)}100%{transform:translateY(calc(100% * 7 - 20px))}}
+.read{position:absolute;right:16px;bottom:14px;background:var(--ok);color:#fff;font-size:13px;font-weight:800;padding:5px 12px;border-radius:99px;opacity:0;animation:pop .4s ease 3.4s forwards}
+:root[data-theme="dark"] .read{color:#0E1424}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .read{color:#0E1424}}
+@keyframes pop{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.scan{display:none}.read{animation:none;opacity:1}}
+
+section{padding:64px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(26px,3.4vw,36px);line-height:1.2;margin:0 0 12px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 34px;max-width:36em}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{position:relative;padding:0 18px 0 0}
+.steps li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;margin-bottom:14px;position:relative;z-index:1}
+:root[data-theme="dark"] .steps li::before{color:#0E1424}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps li::before{color:#0E1424}}
+.steps li::after{content:"";position:absolute;top:19px;left:38px;right:0;border-top:2px dashed var(--line)}
+.steps li:last-child::after{display:none}
+.steps h3{margin:0 0 6px;font-size:18px}
+.steps p{margin:0;color:var(--muted);font-size:15px}
+
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px}
+.drop{display:block;border:2px dashed var(--blue);background:var(--blue-soft);border-radius:14px;padding:30px 16px;text-align:center;cursor:pointer;font-weight:700;color:var(--blue);margin-bottom:16px}
+.drop input{display:none}
+.drop:focus-within{outline:3px solid var(--blue);outline-offset:3px}
+#fname{display:block;font-weight:500;color:var(--muted);font-size:14px;margin-top:4px}
+#status{margin:16px 0 0;min-height:1.6em;color:var(--muted);font-size:15px}
+.res{display:flex;gap:18px;align-items:center}
+.score{font-size:44px;font-weight:800;line-height:1;color:var(--ok)}
+.flag{margin-top:14px;background:var(--warn-bg);color:var(--warn);padding:10px 14px;border-radius:10px;font-weight:700;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:700;font-size:13px}
+td.n{font-variant-numeric:tabular-nums;font-weight:700}
+.tag{font-size:12px;font-weight:800;color:var(--warn);background:var(--warn-bg);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.scroll{overflow-x:auto}
+
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.rules div{padding:4px 28px 4px 0}
+.rules div+div{padding-left:28px;border-left:1px solid var(--line)}
+.rules h3{margin:0 0 6px;font-size:18px}
+.rules p{margin:0;color:var(--muted);font-size:15px}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:820px){
+  .hero,.demo{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr;gap:28px 10px}.steps li::after{display:none}
+  .rules{grid-template-columns:1fr;gap:22px}.rules div+div{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:22px}
+  nav a:not(:last-child){display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="#"><i></i>Багшийн туслах</a>
+    <nav><a href="#process">Яаж ажилладаг</a><a href="#demo">Туршиж үзэх</a><a href="#ethics">Ёс зүй</a></nav>
+  </header>
+
+  <main>
+  <div class="hero">
+    <div>
+      <h1>Тестийн хуудсыг зураг авч шалгуул. Оноог Sheet-ээс ав.</h1>
+      <p class="lead">Сурагчийн хариулсан хуудсыг утсаараа зургаар авахад Gemini уншиж, түлхүүртэй тулгаад Google Sheet-д оноог нэмнэ. Тодорхойгүй хариуг танд шалгуулахаар тэмдэглэнэ.</p>
+      <div class="btns">
+        <a class="btn main" href="#demo">Хуудас уншуулах</a>
+        <a class="btn alt" href="#process">Яаж ажилладгийг үзэх</a>
+      </div>
+      <p class="note">Сурагчийг нэрээр биш кодоор бүртгэнэ. Эцсийн оноог багш баталгаажуулна.</p>
+    </div>
+
+    <div class="sheet" aria-label="Уншигдаж буй тестийн хуудасны жишээ">
+      <div class="sheet-top"><span>Сурагчийн код</span><span>#017</span></div>
+      <div class="row q"><span></span><span>А</span><span>Б</span><span>В</span><span>Г</span></div>
+      <div class="row">1<b></b><b class="on"></b><b></b><b></b></div>
+      <div class="row">2<b></b><b></b><b></b><b class="on"></b></div>
+      <div class="row">3<b class="on"></b><b></b><b></b><b></b></div>
+      <div class="row">4<b></b><b></b><b class="on"></b><b></b></div>
+      <div class="row">5<b></b><b class="on"></b><b></b><b></b></div>
+      <div class="row">6<b class="on"></b><b></b><b></b><b></b></div>
+      <div class="scan"></div>
+      <span class="read">Уншлаа: 5/6</span>
+    </div>
+  </div>
+
+  <section id="process">
+    <h2>Нэг хуудас, дөрвөн алхам</h2>
+    <p class="sub">Шаблон нь тод хүрээтэй, цагаан дэвсгэртэй байх тусам уншилт илүү зөв болно.</p>
+    <ol class="steps">
+      <li><h3>Зураг авах</h3><p>Хуудсыг дээрээс нь, сүүдэргүй авна.</p></li>
+      <li><h3>Gemini уншина</h3><p>Сурагчийн код ба тэмдэглэсэн хариуг JSON болгоно.</p></li>
+      <li><h3>Түлхүүртэй тулгана</h3><p>Key табын зөв хариутай харьцуулж оноо бодно.</p></li>
+      <li><h3>Sheet-д бичнэ</h3><p>Results таб дээр мөр нэмэгдэнэ.</p></li>
+    </ol>
+  </section>
+
+  <section id="demo">
+    <h2>Нэг хуудсыг туршиж үзэх</h2>
+    <p class="sub">Энэ хуудсанд зөвхөн жишээ үр дүн гарна. Бодит уншилт хийхийн тулд Apps Script-ийн index.html-д суулгана.</p>
+    <div class="demo">
+      <div class="panel">
+        <label class="drop">
+          <input type="file" id="f" accept="image/*" capture="environment">
+          Зураг сонгох эсвэл авах
+          <span id="fname">Файл сонгоогүй</span>
+        </label>
+        <button class="btn main" id="go" type="button">Шалгах</button>
+        <p id="status" role="status" aria-live="polite"></p>
+        <div id="result"></div>
+      </div>
+      <div class="panel scroll">
+        <table>
+          <caption style="text-align:left;font-weight:800;padding-bottom:10px">Results таб (жишээ)</caption>
+          <thead><tr><th>Код</th><th>Оноо</th><th>Нийт</th><th>Төлөв</th></tr></thead>
+          <tbody id="rows">
+            <tr><td>#015</td><td class="n">18</td><td class="n">20</td><td>Баталгаажсан</td></tr>
+            <tr><td>#016</td><td class="n">14</td><td class="n">20</td><td>Баталгаажсан</td></tr>
+            <tr><td>#018</td><td class="n">17</td><td class="n">20</td><td><span class="tag">2 хариу шалгах</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="ethics">
+    <h2>Багш шийднэ, AI тусална</h2>
+    <p class="sub">Сурагчийн мэдээллийг хамгаалах, алдааг нээлттэй хэлэх нь энэ системийн үндсэн дүрэм.</p>
+    <div class="rules">
+      <div><h3>Нэргүй өгөгдөл</h3><p>Хуудсанд нэр, сургуулийн мэдээлэл бичихгүй. Зөвхөн код ашиглана.</p></div>
+      <div><h3>Тодорхойгүй бол шалгана</h3><p>Бүдэг, хоёр сонголттой хариуг "?" гэж тэмдэглээд багшид үлдээнэ.</p></div>
+      <div><h3>Нотолгоотой</h3><p>Гар болон автомат үнэлгээг харьцуулж нарийвчлалыг хэмжинэ.</p></div>
+    </div>
+  </section>
+  </main>
+
+  <footer><span>Багшийн туслах · Физикийн багшид зориулсан</span><span>Gemini API · Google Apps Script</span></footer>
+</div>
+
+<script>
+var f=document.getElementById('f'),go=document.getElementById('go'),st=document.getElementById('status'),rs=document.getElementById('result');
+f.addEventListener('change',function(){document.getElementById('fname').textContent=f.files[0]?f.files[0].name:'Файл сонгоогүй';});
+
+function show(r){
+  rs.innerHTML='<div class="res"><div class="score">'+r.score+'/'+r.total+'</div><div><b>Код: '+r.code+'</b><br><span style="color:var(--muted)">Sheet-д нэмэгдлээ</span></div></div>'+
+    (r.unclear?'<div class="flag">'+r.unclear+' хариу тодорхойгүй. Багш шалгана уу.</div>':'');
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td>'+r.code+'</td><td class="n">'+r.score+'</td><td class="n">'+r.total+'</td><td>'+(r.unclear?'<span class="tag">'+r.unclear+' хариу шалгах</span>':'Баталгаажсан')+'</td>';
+  document.getElementById('rows').appendChild(tr);
+}
+
+go.addEventListener('click',function(){
+  var file=f.files[0];
+  if(!file){st.textContent='Эхлээд тестийн хуудасны зураг сонгоно уу.';return;}
+  go.disabled=true;st.textContent='Уншиж байна...';rs.innerHTML='';
+  var done=function(){go.disabled=false;};
+  var img=new Image();
+  img.onload=function(){
+    var s=Math.min(1,1600/img.width),c=document.createElement('canvas');
+    c.width=img.width*s;c.height=img.height*s;
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    var b64=c.toDataURL('image/jpeg',0.85).split(',')[1];
+    if(typeof google!=='undefined'&&google.script&&google.script.run){
+      google.script.run
+        .withSuccessHandler(function(r){st.textContent='Дууслаа.';show(r);done();})
+        .withFailureHandler(function(e){st.textContent='Алдаа: '+e.message;done();})
+        .processSheet(b64,'image/jpeg');
+    }else{
+      setTimeout(function(){st.textContent='Дууслаа (жишээ үр дүн).';show({code:'#019',score:16,total:20,unclear:1});done();},1100);
+    }
+  };
+  img.onerror=function(){st.textContent='Зургийг нээж чадсангүй. JPG эсвэл PNG сонгоно уу.';done();};
+  img.src=URL.createObjectURL(file);
+});
+</script>
+</body>
+</html>
